@@ -12,23 +12,23 @@ void printToken( TokenType, const char*);
  *	Creates a new statement node ofr syntax tree 
  *	construction.
  */
-//TreeNode* newStmtNode (StmtKind);
+TreeNode* newStmtNode (StmtKind);
 
 /* 
  *	Creates a new expression node
  * 	for syntax tree construction.
  */
-//TreeNode* newExpNode (ExpKind);
+TreeNode* newExpNode (ExpKind);
 
 /* 
  *	Allocates and makes a new copy of
  *	an existing string.
  */
-//char* copyString(char*);
+char* copyString(char*);
 
 /*
  *	Prints a syntax tree to the listing file
  *	using indentation to indicate subtrees. 
  */
-//void printTree(TreeNode*);
+void printTree(TreeNode*);
 #endif

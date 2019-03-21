@@ -67,6 +67,31 @@ int main (int argc, char* argv[]) {
 		fprintf(listing, "\nSyntax tree: \n");
 		printTree(syntaxTree);
 	}
+#if !NO_ANALYZE
+	if (! Error) {
+		if (TraceAnalyze) fprintf(listing, "\nBuilding Synbol Table ...\n");
+		buildSyntab(syntaxTree);
+		if (TraceAnalyze) fprintf(listing, "\nChecking Types ...\n");
+		typeCheck(syntaxTree);
+		if (TraceAnalyze) fprintf(listing, "\nType Checking Finished\n");
+	}
+#if !NO_CODE
+	if (! Error) {
+		char* codefile;
+		int fnlen = strcspn(pgm, ".");
+		codefile = (char*) calloc(fnlen+4, sizeof(char));
+		strncpy(codefile, pgm, fnlen);
+		strcat(codefile, ".tm");
+		code = fopen(codefile, "w");
+		if(code == NULL) {
+			printf("Unable to open %s\n", codefile);
+			exit(1);
+		}
+		codeGen(syntaxTree, codefile);
+		fclose(code);
+	}
+#endif
+#endif
 #endif
 	fclose(source);
 	return 0;
