@@ -11,7 +11,6 @@
 
 #include "util.h"
 
-
 #if NO_PARSE
 #include "scan.h"
 #else
