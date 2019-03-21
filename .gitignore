@@ -1,0 +1,11 @@
+#object file
+*.o
+
+#exe file
+20161596
+
+#lex file
+lex.yy.c
+
+#swap file
+*.swp
