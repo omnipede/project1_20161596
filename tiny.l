@@ -2,6 +2,7 @@
 	#include "globals.h"
 	#include "util.h"
 	#include "scan.h"
+	#define YY_NO_UNPUT
 	char tokenString[MAXTOKENLEN+1];
 
 	#define MAXERRORLEN MAXTOKENLEN
