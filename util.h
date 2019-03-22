@@ -1,7 +1,6 @@
 #ifndef _UTIL_H_
 #define _UTIL_H_
 
-#include "globals.h"
 /* 
  *	Prints a token and its lexeme ot the 
  *	listing file.
