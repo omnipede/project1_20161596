@@ -2,7 +2,6 @@
 	#include "globals.h"
 	#include "util.h"
 	#include "scan.h"
-	#include "error.h"
 	#define YY_NO_UNPUT
 	char tokenString[MAXTOKENLEN+1];
 	struct ErrorType lexError;
@@ -100,4 +99,22 @@ TokenType getToken(void) {
 		}
 	}
 	return currentToken;
+}
+
+void error(struct ErrorType* e, int line, char* msg) {
+
+	if (!e)
+		return;
+	errorFlush(e);
+	e->pos = line;
+	strncpy(e->msg, msg, MAXERRORLEN);
+	return;
+}
+
+void errorFlush(struct ErrorType* e) {
+
+	if(!e)
+		return;
+	strcpy(e->msg, "");
+	return;
 }
