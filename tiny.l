@@ -5,6 +5,9 @@
 	#define YY_NO_UNPUT
 	char tokenString[MAXTOKENLEN+1];
 	struct ErrorType lexError;
+
+	/* Line number where error occured.*/
+	int errorLine = 1;
 %}
 
 digit		[0-9]
@@ -47,7 +50,9 @@ whitespace	[ \t]+
 {newline}		{lineno++;}
 {whitespace}	{/* skip whitespace. */}
 "/*"			{ 
-					register int c, temp_lineno = lineno;
+					register int c, temp_lineno;
+					errorLine = lineno;
+					temp_lineno = lineno;
 					while(1) {
 						while( (c = input() ) != '*' && c != EOF){
 							if (c == '\n')
@@ -64,15 +69,14 @@ whitespace	[ \t]+
 							}
 						}
 						if ( c == EOF ) {/* Error occured.*/
-							error(&lexError, lineno, "Comment Error");
 							lineno = temp_lineno;
-							return ERROR;
+							return ERROR_IN_COMMENT;
 						}
 					}	
 			  	}
 <<EOF>>			{return ENDFILE;}
 .				{
-					error(&lexError, lineno, "Invalid token error");
+					errorLine = lineno;
 					return ERROR;
 				}
 %%
@@ -89,32 +93,14 @@ TokenType getToken(void) {
 	currentToken = yylex();
 	strncpy(tokenString, yytext, MAXTOKENLEN);
 	if (TraceScan) {
-		if (currentToken == ERROR) {
-			fprintf(listing,"\t%d\t", lexError.pos);
-			printToken(currentToken, lexError.msg);
+		if (currentToken == ERROR || currentToken ==ERROR_IN_COMMENT) {
+			fprintf(listing,"\t%d\t", errorLine);
 		}
 		else {
 			fprintf(listing,"\t%d\t", lineno);
-			printToken(currentToken, tokenString);
 		}
+		printToken(currentToken, tokenString);
 	}
 	return currentToken;
 }
 
-void error(struct ErrorType* e, int line, char* msg) {
-
-	if (!e)
-		return;
-	errorFlush(e);
-	e->pos = line;
-	strncpy(e->msg, msg, MAXERRORLEN);
-	return;
-}
-
-void errorFlush(struct ErrorType* e) {
-
-	if(!e)
-		return;
-	strcpy(e->msg, "");
-	return;
-}

@@ -8,7 +8,7 @@ $(TARGET): $(OBJECTS) lex.yy.o
 
 lex.yy.o: globals.h util.h scan.h
 	flex tiny.l
-	gcc -Wall -c lex.yy.c -lfl
+	gcc -Wall -c lex.yy.c 
 
 main.o: globals.h util.h scan.h
 util.o: globals.h util.h
