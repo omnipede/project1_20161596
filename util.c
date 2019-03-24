@@ -100,7 +100,7 @@ void printToken(TokenType token, const char* tokenString) {
 		fprintf(listing, "\tERROR\t\t%s\n", tokenString);
 		break;
 	case ERROR_IN_COMMENT:
-		fprintf(listing, "\tComment Error\t/*\n");
+		fprintf(listing, "\tERROR\t\tComment Error\n");
 		break;
 	default:
 		fprintf(listing, "\tUnknown\t\t%s\n", tokenString);

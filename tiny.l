@@ -4,10 +4,7 @@
 	#include "scan.h"
 	#define YY_NO_UNPUT
 	char tokenString[MAXTOKENLEN+1];
-	struct ErrorType lexError;
 
-	/* Line number where error occured.*/
-	int errorLine = 1;
 %}
 
 digit		[0-9]
@@ -51,7 +48,6 @@ whitespace	[ \t]+
 {whitespace}	{/* skip whitespace. */}
 "/*"			{ 
 					register int c, temp_lineno;
-					errorLine = lineno;
 					temp_lineno = lineno;
 					while(1) {
 						while( (c = input() ) != '*' && c != EOF){
@@ -76,7 +72,6 @@ whitespace	[ \t]+
 			  	}
 <<EOF>>			{return ENDFILE;}
 .				{
-					errorLine = lineno;
 					return ERROR;
 				}
 %%
@@ -93,14 +88,12 @@ TokenType getToken(void) {
 	currentToken = yylex();
 	strncpy(tokenString, yytext, MAXTOKENLEN);
 	if (TraceScan) {
-		if (currentToken == ERROR || currentToken ==ERROR_IN_COMMENT) {
-			fprintf(listing,"\t%d\t", errorLine);
-		}
-		else {
-			fprintf(listing,"\t%d\t", lineno);
-		}
+		fprintf(listing,"\t%d\t", lineno);
 		printToken(currentToken, tokenString);
 	}
 	return currentToken;
 }
 
+int yywrap (void) {
+	return 1;
+}

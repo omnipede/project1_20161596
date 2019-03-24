@@ -1,23 +1,16 @@
-/*
- * Sum
- */
-int main()
-{
-	int arr[123];
-	int i = 0;
-	int sum = 0;
+/* A program to perform Euclid's
+   Algorithm to computer gcd. */
 
-	while (i < 123)
-		{
-			arr[i] = i;
-			i = i+1;
-		}
-	
-	i = 0;
-	while (i <123)
-		{
-			sum = sum + arr[i];
-		}
-	
-	return 0;
-}	
+int gcd (int u, int v) 
+{
+	if (v == 0) return u;
+	else return gcd(v, u-u/v*v);
+	/* u-u/v*v == u mod v */
+}
+
+void main (void)
+{
+	int x; int y;
+	x = input(); y = input();
+	output(gcd(x, y));
+}
